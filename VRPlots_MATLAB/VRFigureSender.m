@@ -400,43 +400,12 @@ classdef VRFigureSender < handle
 			end
 		end
 		
-		function RepeatedlyServeFigure(fig)
-			if nargin < 1
-				fig = gcf;
-			end
-			
-			fs = VRFigureSender();
-			
-			while true
-				try
-					fs.startServing('timeout',1);
-					if fs.isConnected
-						c_saySingle('Just connected');
-						fs.sendFigure(fig);
-						while (fs.isConnected)
-							c_saySingle('Looping while connected');
-							pause(1);
-						end
-						c_saySingle('No longer connected');
-					end
-				catch e
-					c_saySingle('Caught exception: %s',c_toString(e));
-				end
-				pause(1);
-			end
-		end
-		
 		function SendFigure(fig)
 			if nargin < 1
 				fig = gcf;
 			end
 			
-			fs = VRFigureSender();
-			
-			fs.startServing('timeout',inf);
-			if ~fs.isConnected
-				error('Could not connect');
-			end
+			fs = VRFigureSender();			
 			fs.sendFigure(fig);
 		end
 		
